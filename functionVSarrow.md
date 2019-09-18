@@ -103,7 +103,7 @@ const b = function(name) { return `Hello, ${name}!`; }
 // 또는
 const b = name => `Hello, ${name}!`;
 ```
-### call, apply, bind
+# call, apply, bind
 > ### call
 
 call 메서드는 모든 함수에서 사용할 수 있으며, **this를 특정 값으로 지정**할 수 있다.
@@ -131,3 +131,59 @@ apply는 배열 요소를 함수 매개변수로 사용해야 할 때 유용하�
 
 bind를 사용하면 함수의 **this 값을 영구히 바꿀 수 있다.**
 
+# arrow function 과 일반 function 차이점
+> ### 1.this와 arguments의 차이
+- 화살표 함수는 `this`와 `arguments`를 바인딩하지 않는다. 그 대신, 일반적인 `this`와 `arguments`와 동일한 범위를 가지고 있다.
+
+### 바인딩이란?
+- 변수나 함수사이에서 연관되어있는 관계이다.
+``` javascript
+function createObj(){
+	console.log(`Inside createObj: ${this.name}`);
+	return {
+		name: "woochan",
+		printName(){
+			console.log(`Inside printName: ${this.name}`);
+		},
+	};
+}
+
+createObj.call({ name: "I'm upset!!!" }).printName();
+// Inside createObj:I'm upset!!!
+// Inside printName:woochan
+```
+
+``` javascript
+function createObj(){
+	console.log(`Inside createObj: ${this.name}`);
+	return {
+		name: "woochan",
+		printName: () => console.log(`Inside printName: ${this.name}`),
+	};
+}
+
+createObj.call({ name: "i'm happy!!!" }).printName();
+// Inside createObj: i'm happy!!!
+// Inside printName: i'm happy!!!	 
+```
+### 결론
+즉, 화살표 함수안에서의 `this`는 `createObj`안의 `this`를 따르게 된다. 이는 화살표 함수가 현재 환경의 `this`를 따르게 하고 싶을 때 유용하다는 뜻이다. 이 말인 즉슨, 화살표함수에서는 `bind`와 `call`을 사용할 수 없다는 뜻이기도 하다.
+
+> ### 2. 화살표 함수는  `new`로 호출할수 없다.
+es2015에서는  `callable`한 것과  `constructable`한 것과의 차이를 두고 있다. 어떤 함수가  `constructable`하다면, 이는  `new`로 호출되어야 한다. ex)  `new Date()`  그리고 만약 함수가  `callable`하다면, 이 함수는  `new`없이도 호출이 되어야 한다 . ex) 일반적인 함수 호출
+
+일반적인 함수의 경우  `callable`하며  `constructable`하다. 그러나 화살표 함수는 오로지  `callable`할 뿐이다. 반대로  `class`의 경우에는 오로지  `constructable`할 뿐이다.
+
+> ### 정리
+## 💫정리
+
+### 서로 바꿔서 쓸 수 있는 경우
+
+-   `this`,  `arguments`를 쓰지 않는 경우
+-   `bind(this)`를 사용하는 경우
+
+### 서로 바꿔쓸 수 없는 경우
+
+-   `constructable`  함수
+-   `prototype`에 추가된 함수나 메소드
+-   `arguments`를 함수의 인자로 사용하는 경우
