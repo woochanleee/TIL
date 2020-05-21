@@ -132,7 +132,7 @@ import koaStatic from "koa-static";
 
 const app = new Koa();
 
-app.use(koaStatic("upload")); // 매개변수로 upload를 넘겨줬는데 이는 루트디렉토리 > upload에 있는 파일을 접근할수 있게 한다. 예를들어 'http://localhost/[파일 이름]'를 통해 접근 가능하다.
+app.use(koaStatic("public")); // 매개변수로 public를 넘겨줬는데 이는 루트디렉토리 > public에 있는 파일을 접근할수 있게 한다. 예를들어 'http://localhost/[파일 이름]'를 통해 접근 가능하다.
 
 ...
 ```
